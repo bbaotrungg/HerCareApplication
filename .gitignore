@@ -1,0 +1,88 @@
+# Miscellaneous & OS
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+migrate_working_dir/
+
+# IDE & Editor files
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+# Flutter / Dart / Pub
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Android specific
+**/android/.gradle/
+**/android/.kotlin/
+**/android/captures/
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+.cxx/
+
+# Application Binaries & Packages
+*.apk
+*.ap_
+*.aab
+*.dex
+hercare-release.apk
+
+# Keystores, Keys, Certificates, & Secrets
+*.keystore
+*.jks
+*.key
+*.p12
+*.pem
+*.cer
+*.crt
+key.properties
+signing.properties
+secrets.json
+google-services.json
+GoogleService-Info.plist
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Symbolication & Obfuscation
+app.*.symbols
+app.*.map.json
+
+# iOS / macOS build files
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+
+# Windows / Linux ephemeral
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
+
+# Scratch & temporary
+/scratch/
+.widget_preview/
