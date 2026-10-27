@@ -120,29 +120,34 @@ class _CareScreenState extends ConsumerState<CareScreen> with SingleTickerProvid
             // Context basis badge
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: AppColors.lavenderSurface,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(rec.icon, size: 14, color: AppColors.lavenderDark),
-                      const SizedBox(width: 6),
-                      Text(
-                        rec.contextBasis,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.lavenderDark,
+                Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.lavenderSurface,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(rec.icon, size: 14, color: AppColors.lavenderDark),
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            rec.contextBasis,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.lavenderDark,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 IconButton(
                   icon: const Icon(Icons.bookmark_outline, size: 18),
                   tooltip: l10n.careSaveToNotes,
@@ -283,63 +288,67 @@ class _CareScreenState extends ConsumerState<CareScreen> with SingleTickerProvid
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: theme.dividerColor),
       ),
-      child: ExpansionTile(
-        tilePadding: const EdgeInsets.all(16),
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors.lavenderSurface,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Icon(tip.category.icon, color: AppColors.lavenderDark, size: 22),
-        ),
-        title: Text(
-          tip.title,
-          style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(
-            tip.summary,
-            style: theme.textTheme.bodySmall,
-          ),
-        ),
-        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-        expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Divider(),
-          Text(
-            tip.fullContent,
-            style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
-          ),
-          if (tip.actionablePoints.isNotEmpty) ...[
-            const SizedBox(height: 14),
-            Text(
-              'Helpful Partner Actions:',
-              style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
+      child: Material(
+        color: theme.cardTheme.color,
+        borderRadius: BorderRadius.circular(16),
+        clipBehavior: Clip.antiAlias,
+        child: ExpansionTile(
+          tilePadding: const EdgeInsets.all(16),
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.lavenderSurface,
+              borderRadius: BorderRadius.circular(10),
             ),
-            const SizedBox(height: 6),
-            ...tip.actionablePoints.map((pt) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.check, size: 16, color: AppColors.sage),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(pt, style: theme.textTheme.bodySmall),
-                    ),
-                  ],
-                ),
-              );
-            }),
+            child: Icon(tip.category.icon, color: AppColors.lavenderDark, size: 22),
+          ),
+          title: Text(
+            tip.title,
+            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              tip.summary,
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
+          childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Divider(),
+            Text(
+              tip.fullContent,
+              style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+            ),
+            if (tip.actionablePoints.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              Text(
+                'Helpful Partner Actions:',
+                style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 6),
+              ...tip.actionablePoints.map((pt) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.check, size: 16, color: AppColors.sage),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(pt, style: theme.textTheme.bodySmall),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

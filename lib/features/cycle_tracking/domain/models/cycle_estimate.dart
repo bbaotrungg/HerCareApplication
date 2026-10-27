@@ -107,7 +107,7 @@ class CycleEstimate {
       if (dayOfCycle != null) {
         return isVi ? 'Ngày $dayOfCycle của chu kỳ hiện tại' : 'Day $dayOfCycle of current cycle';
       }
-      return isVi ? 'Awaiting first period date' : 'Awaiting first period date';
+      return isVi ? 'Đang chờ ngày đầu kỳ kinh' : 'Awaiting first period date';
     }
 
     if (daysUntilEstimatedPeriod! == 0) {

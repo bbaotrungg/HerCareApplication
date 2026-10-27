@@ -207,6 +207,7 @@ class AppLocalizations {
   // --- Common Dialog Actions ---
   String get actionCancel => isVietnamese ? 'Hủy' : 'Cancel';
   String get actionSave => isVietnamese ? 'Lưu' : 'Save';
+  String get actionEdit => isVietnamese ? 'Sửa' : 'Edit';
   String get actionDelete => isVietnamese ? 'Xóa' : 'Delete';
   String get actionConfirm => isVietnamese ? 'Xác nhận' : 'Confirm';
   String get actionClose => isVietnamese ? 'Đóng' : 'Close';

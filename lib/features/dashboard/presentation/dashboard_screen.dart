@@ -78,45 +78,48 @@ class DashboardScreen extends ConsumerWidget {
           ],
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await ref.read(cycleRecordsProvider.notifier).loadRecords();
-        },
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // 1. Current Cycle Overview & Phase Banner
-            _buildCycleStatusCard(context, theme, estimate, l10n, language),
+      body: SafeArea(
+        top: false,
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await ref.read(cycleRecordsProvider.notifier).loadRecords();
+          },
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+            children: [
+              // 1. Current Cycle Overview & Phase Banner
+              _buildCycleStatusCard(context, theme, estimate, l10n, language),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 18),
 
-            // 2. Possible Symptoms & Mood Today (Automated contextual estimates)
-            _buildPossibleSymptomsAndMoodSection(
-              context,
-              theme,
-              symptomMoodEstimate,
-              estimate,
-              l10n,
-            ),
+              // 2. Possible Symptoms & Mood Today (Automated contextual estimates)
+              _buildPossibleSymptomsAndMoodSection(
+                context,
+                theme,
+                symptomMoodEstimate,
+                estimate,
+                l10n,
+              ),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 18),
 
-            // 3. Today's Care Suggestions (Derived from the estimated context above)
-            _buildCareSuggestionsSection(
-              context,
-              ref,
-              theme,
-              recommendations,
-              l10n,
-            ),
+              // 3. Today's Care Suggestions (Derived from the estimated context above)
+              _buildCareSuggestionsSection(
+                context,
+                ref,
+                theme,
+                recommendations,
+                l10n,
+              ),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 18),
 
-            // 4. Quick Actions (Minimal user input: Period Start is primary)
-            _buildQuickActionsBar(context, ref, selectedDate, l10n),
+              // 4. Quick Actions (Minimal user input: Period Start is primary)
+              _buildQuickActionsBar(context, ref, selectedDate, l10n),
 
-            const SizedBox(height: 28),
-          ],
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );
@@ -141,37 +144,34 @@ class DashboardScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 6,
             children: [
-              Flexible(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: phase.color.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(phase.icon, size: 16, color: phase.color),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(
-                          phase.localizedName(language),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: phase.color,
-                          ),
-                        ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: phase.color.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(phase.icon, size: 16, color: phase.color),
+                    const SizedBox(width: 6),
+                    Text(
+                      phase.localizedName(language),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: phase.color,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -481,27 +481,31 @@ class DashboardScreen extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.careSectionTitle,
-                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  l10n.isVietnamese
-                      ? 'Những cử chỉ ân cần phù hợp với thời điểm chu kỳ hôm nay'
-                      : 'Considerate gestures matching today\'s estimated context',
-                  style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.careSectionTitle,
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.isVietnamese
+                        ? 'Những cử chỉ ân cần phù hợp với thời điểm chu kỳ hôm nay'
+                        : 'Considerate gestures matching today\'s estimated context',
+                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
+                  ),
+                ],
+              ),
             ),
-            if (onNavigateToTab != null)
+            if (onNavigateToTab != null) ...[
+              const SizedBox(width: 8),
               TextButton(
                 onPressed: () => onNavigateToTab!(2), // Tab 2: Care & Learn
                 child: Text(l10n.careExploreMore),
               ),
+            ],
           ],
         ),
         const SizedBox(height: 10),
@@ -542,29 +546,34 @@ class DashboardScreen extends ConsumerWidget {
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.lavenderSurface,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(rec.icon, size: 14, color: AppColors.lavenderDark),
-                    const SizedBox(width: 6),
-                    Text(
-                      rec.contextBasis,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.lavenderDark,
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.lavenderSurface,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(rec.icon, size: 14, color: AppColors.lavenderDark),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          rec.contextBasis,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.lavenderDark,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              const Spacer(),
+              const SizedBox(width: 8),
               IconButton(
                 icon: const Icon(Icons.bookmark_outline, size: 18),
                 tooltip: l10n.careSaveToNotes,
@@ -620,53 +629,85 @@ class DashboardScreen extends ConsumerWidget {
       children: [
         Text(
           l10n.quickActionsTitle,
-          style: Theme.of(context).textTheme.titleSmall,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        // Primary action on row 1: full width tap target (48dp+) for comfortable thumb reach on 20:9 screens
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => PeriodEntryDialog(defaultDate: selectedDate),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.softRose,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              elevation: 0,
+            ),
+            icon: const Icon(Icons.water_drop, size: 20),
+            label: Text(
+              l10n.btnRecordPeriodStart,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+          ),
         ),
         const SizedBox(height: 8),
+        // Secondary actions on row 2: Quick Note and Optional Log side-by-side
         Row(
           children: [
-            // Primary input: Record Period Start
             Expanded(
-              flex: 2,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => PeriodEntryDialog(defaultDate: selectedDate),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.softRose,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                ),
-                icon: const Icon(Icons.water_drop, size: 18),
-                label: Text(
-                  l10n.btnRecordPeriodStart,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            // Secondary: Quick Note
-            Expanded(
-              child: OutlinedButton.icon(
+              child: OutlinedButton(
                 onPressed: () => _showQuickNoteDialog(context, ref, l10n),
                 style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                icon: const Icon(Icons.edit_note_outlined, size: 18),
-                label: Text(l10n.btnNote),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.edit_note_outlined, size: 18),
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        l10n.btnNote,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(width: 8),
-            // Optional Manual Log icon button
-            IconButton.outlined(
-              onPressed: () => LogObservationSheet.show(context, date: DateTime.now()),
-              tooltip: l10n.btnOptionalManualLog,
-              icon: const Icon(Icons.playlist_add, size: 20),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => LogObservationSheet.show(context, date: DateTime.now()),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.playlist_add, size: 18),
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        l10n.btnOptionalManualLog,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

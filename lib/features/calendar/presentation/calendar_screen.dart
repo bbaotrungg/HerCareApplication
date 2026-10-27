@@ -150,6 +150,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             _buildSelectedDateDetails(
               context,
               theme: theme,
+              l10n: l10n,
               date: selectedDate,
               cycleRecord: selectedDateCycle,
               observation: selectedDateObs,
@@ -357,6 +358,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   Widget _buildSelectedDateDetails(
     BuildContext context, {
     required ThemeData theme,
+    required AppLocalizations l10n,
     required DateTime date,
     required CycleRecord? cycleRecord,
     required DailyObservation? observation,
@@ -375,11 +377,15 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                AppDateUtils.formatFullDate(date),
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              Expanded(
+                child: Text(
+                  AppDateUtils.formatFullDate(date),
+                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              if (cycleRecord != null)
+              if (cycleRecord != null) ...[
+                const SizedBox(width: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
@@ -387,15 +393,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: AppColors.softRoseLight),
                   ),
-                  child: const Text(
-                    'Confirmed Period',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.calendarConfirmedPeriod,
+                    style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: AppColors.softRoseDark,
                     ),
                   ),
                 ),
+              ],
             ],
           ),
           const SizedBox(height: 14),
@@ -410,7 +417,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 );
               },
               icon: const Icon(Icons.water_drop_outlined, size: 16, color: AppColors.softRose),
-              label: const Text('Mark as Period Start Date'),
+              label: Text(l10n.isVietnamese ? 'Đánh dấu ngày bắt đầu kỳ kinh' : 'Mark as Period Start Date'),
             ),
           ] else ...[
             Row(
@@ -418,8 +425,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 Expanded(
                   child: Text(
                     cycleRecord.endDate != null
-                        ? 'Period: ${AppDateUtils.formatShortDate(cycleRecord.startDate)} to ${AppDateUtils.formatShortDate(cycleRecord.endDate!)} (${cycleRecord.durationInDays} days)'
-                        : 'Period started on ${AppDateUtils.formatShortDate(cycleRecord.startDate)} (Ongoing)',
+                        ? (l10n.isVietnamese
+                            ? 'Kỳ kinh: ${AppDateUtils.formatShortDate(cycleRecord.startDate)} đến ${AppDateUtils.formatShortDate(cycleRecord.endDate!)} (${cycleRecord.durationInDays} ngày)'
+                            : 'Period: ${AppDateUtils.formatShortDate(cycleRecord.startDate)} to ${AppDateUtils.formatShortDate(cycleRecord.endDate!)} (${cycleRecord.durationInDays} days)')
+                        : (l10n.isVietnamese
+                            ? 'Kỳ kinh bắt đầu ngày ${AppDateUtils.formatShortDate(cycleRecord.startDate)} (Đang diễn ra)'
+                            : 'Period started on ${AppDateUtils.formatShortDate(cycleRecord.startDate)} (Ongoing)'),
                     style: theme.textTheme.bodyMedium,
                   ),
                 ),
@@ -430,7 +441,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                       builder: (context) => PeriodEntryDialog(initialRecord: cycleRecord),
                     );
                   },
-                  child: const Text('Edit'),
+                  child: Text(l10n.actionEdit),
                 ),
               ],
             ),
@@ -442,16 +453,24 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Symptoms & Mood',
-                style: theme.textTheme.titleSmall,
+              Expanded(
+                child: Text(
+                  l10n.isVietnamese ? 'Triệu chứng & Cảm xúc' : 'Symptoms & Mood',
+                  style: theme.textTheme.titleSmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              const SizedBox(width: 8),
               TextButton.icon(
                 onPressed: () {
                   LogObservationSheet.show(context, date: date, existing: observation);
                 },
                 icon: Icon(observation != null ? Icons.edit_outlined : Icons.add, size: 16),
-                label: Text(observation != null ? 'Edit Log' : 'Add Log'),
+                label: Text(
+                  observation != null
+                      ? (l10n.isVietnamese ? 'Sửa nhật ký' : 'Edit Log')
+                      : (l10n.isVietnamese ? 'Thêm nhật ký' : 'Add Log'),
+                ),
               ),
             ],
           ),
@@ -463,7 +482,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text(
-                'No observations or shared notes recorded for this date.',
+                l10n.isVietnamese
+                    ? 'Chưa có ghi nhận hay chia sẻ nào trong ngày này.'
+                    : 'No observations or shared notes recorded for this date.',
                 style: theme.textTheme.bodySmall,
               ),
             ),
@@ -514,7 +535,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  'Note: ${observation.note!}',
+                  '${l10n.isVietnamese ? 'Ghi chú' : 'Note'}: ${observation.note!}',
                   style: theme.textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
                 ),
               ),
