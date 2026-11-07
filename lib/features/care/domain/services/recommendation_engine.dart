@@ -67,6 +67,9 @@ class RecommendationEngine {
       }
     }
 
+    // 2.5. Dynamic Symptom & Mood Targeted Suggestions
+    _populateSymptomTargetedSuggestions(list, symptomMoodEstimate, isVi);
+
     // 3. Dynamic Day-by-Day Care Suggestions
     if (day != null) {
       final effectiveDay = _computeEffectiveDay(cycleEstimate, day, phase);
@@ -79,6 +82,99 @@ class RecommendationEngine {
     }
 
     return _deduplicate(list);
+  }
+
+  void _populateSymptomTargetedSuggestions(
+    List<CareRecommendation> list,
+    DailySymptomMoodEstimate estimate,
+    bool isVi,
+  ) {
+    if (!estimate.hasEstimates) return;
+
+    // Check physical possibilities
+    for (final p in estimate.physicalPossibilities) {
+      final labelLower = p.label.toLowerCase();
+      if (labelLower.contains('cramp') || labelLower.contains('pelvic') || labelLower.contains('đau bụng')) {
+        list.add(CareRecommendation(
+          id: 'targeted_cramps',
+          naturalThought: isVi
+              ? 'Nếu hôm nay cô ấy cảm thấy đau bụng kinh hoặc căng tức vùng bụng dưới, bạn có thể chủ động chuẩn bị túi chườm ấm hoặc một ly trà thảo mộc ấm để giúp cô ấy dễ chịu hơn.'
+              : 'If she is experiencing abdominal cramps or pelvic tightness today, offering a warm heating pad or brewing soothing herbal tea is deeply comforting.',
+          gentleContext: isVi
+              ? 'Nhiệt độ ấm làm giãn cơ trơn tử cung, giúp giảm bớt cơn co thắt một cách tự nhiên.'
+              : 'Gentle topical warmth helps relax smooth muscle tissues and ease contractions naturally.',
+          contextBasis: isVi ? 'Xoa dịu cảm giác đau bụng' : 'Soothing abdominal cramps',
+          category: RecommendationCategory.comfort,
+          icon: Icons.spa_outlined,
+        ));
+        break;
+      } else if (labelLower.contains('fatigue') || labelLower.contains('energy') || labelLower.contains('mệt mỏi')) {
+        list.add(CareRecommendation(
+          id: 'targeted_fatigue',
+          naturalThought: isVi
+              ? 'Nếu hôm nay thể lực của cô ấy có phần giảm sút, hãy chủ động lo liệu bữa tối hoặc các việc vặt trong nhà để cô ấy có thời gian nghỉ ngơi trọn vẹn.'
+              : 'If her stamina feels lower today, quietly taking care of dinner or household tasks gives her restorative space to rest without guilt.',
+          gentleContext: isVi
+              ? 'Chủ động gánh vác việc chung khi cô ấy mệt mỏi là cách thể hiện sự quan tâm thiết thực nhất.'
+              : 'Taking initiative with chores lightens her mental and physical load significantly.',
+          contextBasis: isVi ? 'Hỗ trợ khi thể lực giảm' : 'Easing low stamina',
+          category: RecommendationCategory.practicalHelp,
+          icon: Icons.bedtime_outlined,
+        ));
+        break;
+      } else if (labelLower.contains('headache') || labelLower.contains('migraine') || labelLower.contains('đau đầu')) {
+        list.add(CareRecommendation(
+          id: 'targeted_headache',
+          naturalThought: isVi
+              ? 'Nếu cô ấy thấy đau đầu hoặc nhạy cảm với ánh sáng, hãy điều chỉnh đèn dịu bớt, giữ phòng yên tĩnh và chuẩn bị sẵn một cốc nước ấm.'
+              : 'If she mentions a headache or sensitivity to bright lights, dimming the room lighting and bringing cool water offers immediate relief.',
+          gentleContext: isVi
+              ? 'Không gian êm dịu, ít kích thích giác quan giúp xoa dịu cơn đau đầu hiệu quả.'
+              : 'A low-stimulation, dim environment helps soothe tension headaches and sensory strain.',
+          contextBasis: isVi ? 'Chăm sóc khi đau đầu' : 'Calming headache tension',
+          category: RecommendationCategory.comfort,
+          icon: Icons.wb_twilight_outlined,
+        ));
+        break;
+      }
+    }
+
+    // Check emotional possibilities
+    for (final e in estimate.emotionalPossibilities) {
+      final labelLower = e.label.toLowerCase();
+      if (labelLower.contains('sensitive') ||
+          labelLower.contains('stress') ||
+          labelLower.contains('nhạy cảm') ||
+          labelLower.contains('vulnerable')) {
+        list.add(CareRecommendation(
+          id: 'targeted_emotional_safety',
+          naturalThought: isVi
+              ? 'Nếu hôm nay cô ấy cảm thấy nhạy cảm hoặc dễ áp lực hơn bình thường, hãy dành cho cô ấy sự kiên nhẫn và thấu hiểu. Lắng nghe mà không phán xét sẽ giúp cô ấy cảm thấy an tâm.'
+              : 'If she feels emotionally sensitive or prone to stress today, offer extra gentle patience. Validating her feelings without debating them creates deep safety.',
+          gentleContext: isVi
+              ? 'Sự an tâm về mặt cảm xúc là điểm tựa quý giá nhất mà người bạn đời có thể trao gửi.'
+              : 'Emotional safety and patient presence are the most reassuring gifts a partner can provide.',
+          contextBasis: isVi ? 'Điểm tựa cảm xúc chu đáo' : 'Emotional reassurance & calm',
+          category: RecommendationCategory.emotionalSupport,
+          icon: Icons.favorite_outline,
+        ));
+        break;
+      } else if (labelLower.contains('quiet') || labelLower.contains('space') || labelLower.contains('yên tĩnh')) {
+        list.add(CareRecommendation(
+          id: 'targeted_quiet_space',
+          naturalThought: isVi
+              ? 'Nếu cô ấy muốn có khoảng lặng riêng tư, hãy tôn trọng không gian của cô ấy với lời nhắn ấm áp: "Em cứ thoải mái nghỉ ngơi nhé, cần gì cứ gọi anh bất cứ lúc nào."'
+              : 'If she seems to need quiet downtime today, honor her personal space warmly: "Take all the quiet rest you need, I am right here if you want anything."',
+          gentleContext: isVi
+              ? 'Biết cho nhau khoảng không gian riêng tư một cách yêu thương là dấu ấn của sự thấu hiểu sâu sắc.'
+              : 'Respecting boundaries while remaining reliably available fosters trust and relaxation.',
+          contextBasis: isVi ? 'Tôn trọng không gian yên tĩnh' : 'Quiet personal space',
+          category: RecommendationCategory.emotionalSupport,
+          icon: Icons.nights_stay_outlined,
+        ));
+        break;
+      }
+    }
   }
 
   void _populateDaySpecificSuggestions(

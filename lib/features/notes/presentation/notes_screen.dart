@@ -30,23 +30,36 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
   }
 
   void _showAddPreferenceDialog({CarePreference? existing}) {
+    final l10n = ref.read(appLocalizationsProvider);
     final titleController = TextEditingController(text: existing?.title ?? '');
-    String selectedCategory = existing?.category ?? 'Favorite Comfort Foods & Drinks';
+    final categories = l10n.isVietnamese
+        ? [
+            'Món ăn & Đồ uống dễ chịu',
+            'Sản phẩm kinh nguyệt quen dùng',
+            'Cách thư giãn & tạo thoải mái',
+            'Những điều cô ấy không thích khi mệt',
+            'Sở thích chung',
+          ]
+        : [
+            'Favorite Comfort Foods & Drinks',
+            'Preferred Menstrual Products',
+            'Relaxation & Comfort Measures',
+            'Things She Dislikes When Unwell',
+            'General Preference',
+          ];
+    String selectedCategory = existing?.category ?? categories.first;
+    if (!categories.contains(selectedCategory)) {
+      selectedCategory = categories.first;
+    }
     final descController = TextEditingController(text: existing?.description ?? '');
-
-    final categories = [
-      'Favorite Comfort Foods & Drinks',
-      'Preferred Menstrual Products',
-      'Relaxation & Comfort Measures',
-      'Things She Dislikes When Unwell',
-      'General Preference',
-    ];
 
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: Text(existing != null ? 'Edit Care Preference' : 'Add Care Preference'),
+          title: Text(existing != null
+              ? l10n.prefDialogEditTitle
+              : l10n.prefDialogAddTitle),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -55,7 +68,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
                 DropdownButtonFormField<String>(
                   initialValue: selectedCategory,
                   isExpanded: true,
-                  decoration: const InputDecoration(labelText: 'Category'),
+                  decoration: InputDecoration(labelText: l10n.prefDialogCategory),
                   items: categories
                       .map((c) => DropdownMenuItem(
                             value: c,
@@ -71,18 +84,18 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
                 const SizedBox(height: 14),
                 TextField(
                   controller: titleController,
-                  decoration: const InputDecoration(
-                    labelText: 'Item or Preference Title',
-                    hintText: 'e.g. Organic Chamomile Tea, Dark Chocolate',
+                  decoration: InputDecoration(
+                    labelText: l10n.prefDialogItemTitle,
+                    hintText: l10n.prefDialogItemHint,
                   ),
                 ),
                 const SizedBox(height: 14),
                 TextField(
                   controller: descController,
                   maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Optional Details / Brand Preference',
-                    hintText: 'e.g. Preferred brand, specific flavor or temperature',
+                  decoration: InputDecoration(
+                    labelText: l10n.prefDialogDetails,
+                    hintText: l10n.prefDialogDetailsHint,
                   ),
                 ),
               ],
@@ -91,7 +104,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(l10n.actionCancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -113,7 +126,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
                 ref.read(carePreferencesProvider.notifier).save(pref);
                 Navigator.of(context).pop();
               },
-              child: const Text('Save'),
+              child: Text(l10n.actionSave),
             ),
           ],
         ),
@@ -122,24 +135,31 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
   }
 
   void _showAddNoteDialog({PersonalNote? existing}) {
+    final l10n = ref.read(appLocalizationsProvider);
     final titleController = TextEditingController(text: existing?.title ?? '');
-    String selectedCategory = existing?.category ?? 'General';
+    final categories = l10n.isVietnamese
+        ? ['Chung', 'Lời nhắc chăm sóc', 'Sở thích đã chia sẻ', 'Ý tưởng quà tặng']
+        : ['General', 'Care Reminder', 'Shared Preference', 'Gift Idea'];
+    String selectedCategory = existing?.category ?? categories.first;
+    if (!categories.contains(selectedCategory)) {
+      selectedCategory = categories.first;
+    }
     final contentController = TextEditingController(text: existing?.content ?? '');
-
-    final categories = ['General', 'Care Reminder', 'Shared Preference', 'Gift Idea'];
 
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: Text(existing != null ? 'Edit Personal Note' : 'Add Personal Note'),
+          title: Text(existing != null
+              ? l10n.noteDialogEditTitle
+              : l10n.noteDialogAddTitle),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownButtonFormField<String>(
                   initialValue: selectedCategory,
-                  decoration: const InputDecoration(labelText: 'Category'),
+                  decoration: InputDecoration(labelText: l10n.noteDialogCategory),
                   items: categories
                       .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                       .toList(),
@@ -152,18 +172,18 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
                 const SizedBox(height: 14),
                 TextField(
                   controller: titleController,
-                  decoration: const InputDecoration(
-                    labelText: 'Note Title',
-                    hintText: 'e.g., Supplies in car, favorite blanket',
+                  decoration: InputDecoration(
+                    labelText: l10n.noteDialogTitle,
+                    hintText: l10n.noteDialogTitleHint,
                   ),
                 ),
                 const SizedBox(height: 14),
                 TextField(
                   controller: contentController,
                   maxLines: 4,
-                  decoration: const InputDecoration(
-                    labelText: 'Content',
-                    hintText: 'Record helpful notes shared voluntarily by your partner...',
+                  decoration: InputDecoration(
+                    labelText: l10n.noteDialogContent,
+                    hintText: l10n.noteDialogContentHint,
                   ),
                 ),
               ],
@@ -172,7 +192,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(l10n.actionCancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -182,12 +202,16 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
 
                 final note = existing != null
                     ? existing.copyWith(
-                        title: title.isEmpty ? 'Untitled Note' : title,
+                        title: title.isEmpty
+                            ? (l10n.isVietnamese ? 'Ghi chú chưa đặt tên' : 'Untitled Note')
+                            : title,
                         category: selectedCategory,
                         content: content,
                       )
                     : PersonalNote(
-                        title: title.isEmpty ? 'Untitled Note' : title,
+                        title: title.isEmpty
+                            ? (l10n.isVietnamese ? 'Ghi chú chưa đặt tên' : 'Untitled Note')
+                            : title,
                         category: selectedCategory,
                         content: content,
                       );
@@ -195,7 +219,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
                 ref.read(personalNotesProvider.notifier).save(note);
                 Navigator.of(context).pop();
               },
-              child: const Text('Save Note'),
+              child: Text(l10n.actionSave),
             ),
           ],
         ),
@@ -204,15 +228,18 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
   }
 
   void _confirmDelete({required String title, required VoidCallback onConfirm}) {
+    final l10n = ref.read(appLocalizationsProvider);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: Text('Are you sure you want to delete "$title"?'),
+        title: Text(l10n.isVietnamese ? 'Xác nhận xóa' : 'Confirm Deletion'),
+        content: Text(l10n.isVietnamese
+            ? 'Bạn có chắc chắn muốn xóa "$title" không?'
+            : 'Are you sure you want to delete "$title"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(l10n.actionCancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -220,7 +247,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
               onConfirm();
             },
             style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.error),
-            child: const Text('Delete'),
+            child: Text(l10n.actionDelete),
           ),
         ],
       ),
@@ -252,10 +279,10 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
         controller: _tabController,
         children: [
           // Tab 1: Preferences
-          _buildPreferencesList(theme, preferences),
+          _buildPreferencesList(theme, preferences, l10n),
 
           // Tab 2: Notes
-          _buildNotesList(theme, notes),
+          _buildNotesList(theme, notes, l10n),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -274,7 +301,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
     );
   }
 
-  Widget _buildPreferencesList(ThemeData theme, List<CarePreference> preferences) {
+  Widget _buildPreferencesList(ThemeData theme, List<CarePreference> preferences, AppLocalizations l10n) {
     if (preferences.isEmpty) {
       return Center(
         child: Padding(
@@ -284,10 +311,10 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
             children: [
               const Icon(Icons.favorite_border, size: 56, color: AppColors.softRose),
               const SizedBox(height: 16),
-              Text('No Preferences Saved Yet', style: theme.textTheme.headlineSmall),
+              Text(l10n.emptyPreferencesTitle, style: theme.textTheme.headlineSmall, textAlign: TextAlign.center),
               const SizedBox(height: 8),
               Text(
-                'Remember her preferred tea, snacks, comfort measures, or menstrual supply brands.',
+                l10n.emptyPreferencesDesc,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(color: theme.textTheme.bodySmall?.color),
               ),
@@ -295,7 +322,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
               ElevatedButton.icon(
                 onPressed: () => _showAddPreferenceDialog(),
                 icon: const Icon(Icons.add),
-                label: const Text('Add Her First Preference'),
+                label: Text(l10n.btnCreatePreference),
               ),
             ],
           ),
@@ -311,11 +338,14 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           decoration: BoxDecoration(
-            color: theme.cardTheme.color,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: theme.dividerColor),
           ),
-          child: ListTile(
+          child: Material(
+            color: theme.cardTheme.color,
+            borderRadius: BorderRadius.circular(16),
+            clipBehavior: Clip.antiAlias,
+            child: ListTile(
             contentPadding: const EdgeInsets.all(16),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -360,17 +390,18 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(value: 'edit', child: Text('Edit')),
-                const PopupMenuItem(value: 'delete', child: Text('Delete')),
+                PopupMenuItem(value: 'edit', child: Text(l10n.actionEdit)),
+                PopupMenuItem(value: 'delete', child: Text(l10n.actionDelete)),
               ],
             ),
+          ),
           ),
         );
       },
     );
   }
 
-  Widget _buildNotesList(ThemeData theme, List<PersonalNote> notes) {
+  Widget _buildNotesList(ThemeData theme, List<PersonalNote> notes, AppLocalizations l10n) {
     if (notes.isEmpty) {
       return Center(
         child: Padding(
@@ -380,10 +411,10 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
             children: [
               const Icon(Icons.edit_note_outlined, size: 56, color: AppColors.lavender),
               const SizedBox(height: 16),
-              Text('No Personal Notes Yet', style: theme.textTheme.headlineSmall),
+              Text(l10n.emptyNotesTitle, style: theme.textTheme.headlineSmall, textAlign: TextAlign.center),
               const SizedBox(height: 8),
               Text(
-                'Save gentle reminders, gift ideas, or thoughts voluntarily shared by your partner.',
+                l10n.emptyNotesDesc,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(color: theme.textTheme.bodySmall?.color),
               ),
@@ -391,7 +422,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen> with SingleTickerProv
               ElevatedButton.icon(
                 onPressed: () => _showAddNoteDialog(),
                 icon: const Icon(Icons.add),
-                label: const Text('Create a Note'),
+                label: Text(l10n.btnCreateNote),
               ),
             ],
           ),

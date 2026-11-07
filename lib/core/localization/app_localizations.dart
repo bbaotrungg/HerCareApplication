@@ -257,5 +257,116 @@ class AppLocalizations {
       isVietnamese ? 'Dấu ấn cá nhân' : 'Personal Touch';
   String get btnNext => isVietnamese ? 'Tiếp tục' : 'Next';
   String get btnGetStarted => isVietnamese ? 'Bắt đầu' : 'Get Started';
+
+  // --- Period Entry Dialog ---
+  String get periodDialogTitleEdit =>
+      isVietnamese ? 'Chỉnh sửa kỳ kinh' : 'Edit Period Record';
+  String get periodDialogTitleRecord =>
+      isVietnamese ? 'Ghi nhận ngày đầu kỳ kinh' : 'Record Actual Period';
+  String get periodDialogDescription => isVietnamese
+      ? 'Ghi nhận ngày bắt đầu và kết thúc thực tế theo chia sẻ của cô ấy. Chỉ lưu các mốc ngày đã xác nhận.'
+      : 'Enter confirmed start and end dates as shared by your partner. Only actual dates are recorded.';
+  String get periodDialogStartDate =>
+      isVietnamese ? 'Ngày bắt đầu kỳ kinh' : 'Period Start Date';
+  String get periodDialogChange => isVietnamese ? 'Thay đổi' : 'Change';
+  String get periodDialogOngoing => isVietnamese
+      ? 'Kỳ kinh vẫn đang diễn ra / Chưa rõ ngày kết thúc'
+      : 'Period is still ongoing / End date unknown';
+  String get periodDialogEndDate =>
+      isVietnamese ? 'Ngày kết thúc kỳ kinh' : 'Period End Date';
+  String get periodDialogSelectEndDate =>
+      isVietnamese ? 'Chọn ngày kết thúc' : 'Select end date';
+  String get periodDialogSelect => isVietnamese ? 'Chọn' : 'Select';
+  String get periodDialogSaveRecord =>
+      isVietnamese ? 'Lưu bản ghi' : 'Save Record';
+
+  // --- Notes & Preferences ---
+  String get prefDialogEditTitle =>
+      isVietnamese ? 'Chỉnh sửa sở thích chăm sóc' : 'Edit Care Preference';
+  String get prefDialogAddTitle =>
+      isVietnamese ? 'Thêm sở thích chăm sóc' : 'Add Care Preference';
+  String get prefDialogCategory => isVietnamese ? 'Danh mục' : 'Category';
+  String get prefDialogItemTitle =>
+      isVietnamese ? 'Tên món đồ / Sở thích' : 'Item or Preference Title';
+  String get prefDialogItemHint => isVietnamese
+      ? 'Ví dụ: Trà hoa cúc ấm, Socola đen'
+      : 'e.g. Organic Chamomile Tea, Dark Chocolate';
+  String get prefDialogDetails => isVietnamese
+      ? 'Chi tiết thêm / Thương hiệu ưa thích'
+      : 'Optional Details / Brand Preference';
+  String get prefDialogDetailsHint => isVietnamese
+      ? 'Ví dụ: Thương hiệu quen dùng, vị hoặc nhiệt độ mong muốn'
+      : 'e.g. Preferred brand, specific flavor or temperature';
+
+  String get noteDialogEditTitle =>
+      isVietnamese ? 'Chỉnh sửa ghi chú cá nhân' : 'Edit Personal Note';
+  String get noteDialogAddTitle =>
+      isVietnamese ? 'Thêm ghi chú cá nhân' : 'Add Personal Note';
+  String get noteDialogCategory => isVietnamese ? 'Danh mục' : 'Category';
+  String get noteDialogTitle => isVietnamese ? 'Tiêu đề ghi chú' : 'Note Title';
+  String get noteDialogTitleHint => isVietnamese
+      ? 'Ví dụ: Đồ dùng trong xe, chăn ấm yêu thích'
+      : 'e.g., Supplies in car, favorite blanket';
+  String get noteDialogContent => isVietnamese ? 'Nội dung ghi chú' : 'Note Content';
+  String get noteDialogContentHint => isVietnamese
+      ? 'Ghi lại những điều hữu ích giúp bạn chăm sóc cô ấy chu đáo hơn...'
+      : 'Jot down thoughtful observations to help you care better...';
+
+  String get emptyPreferencesTitle =>
+      isVietnamese ? 'Chưa có sở thích nào được lưu' : 'No Care Preferences Yet';
+  String get emptyPreferencesDesc => isVietnamese
+      ? 'Lưu lại đồ ăn, thức uống yêu thích, hoặc nhãn hiệu băng vệ sinh cô ấy hay dùng để luôn chuẩn bị chu đáo.'
+      : 'Save her favorite comfort snacks, drinks, or preferred menstrual care products for thoughtful preparation.';
+  String get emptyNotesTitle =>
+      isVietnamese ? 'Chưa có ghi chú nào' : 'No Personal Notes Yet';
+  String get emptyNotesDesc => isVietnamese
+      ? 'Ghi lại những điều chu đáo cần nhớ, những điều cô ấy chia sẻ, hoặc ý tưởng quà tặng bất ngờ.'
+      : 'Keep track of thoughtful reminders, shared reflections, or personal gift ideas.';
+  String get btnCreatePreference =>
+      isVietnamese ? 'Thêm sở thích đầu tiên' : 'Add a Care Preference';
+  String get btnCreateNote =>
+      isVietnamese ? 'Tạo ghi chú mới' : 'Create a Note';
+
+  // --- Observation Sheet ---
+  String get obsSheetTitle =>
+      isVietnamese ? 'Ghi nhận triệu chứng & tâm trạng' : 'Log Symptoms & Mood';
+  String get obsSheetSharedByHer =>
+      isVietnamese ? 'Cô ấy chia sẻ' : 'Shared by her';
+  String get obsSheetObserved =>
+      isVietnamese ? 'Quan sát & cùng trao đổi' : 'Observed & discussed';
+  String get obsSheetPhysicalHeading =>
+      isVietnamese ? 'Biểu hiện cơ thể cô ấy chia sẻ' : 'Physical Sensations Shared';
+  String get obsSheetPhysicalSub => isVietnamese
+      ? 'Chạm để chọn và điều chỉnh mức độ (Nhẹ, Vừa, Nhiều)'
+      : 'Tap to select and configure intensity (Mild, Moderate, Severe)';
+  String get obsSheetIntensityAdjustTitle =>
+      isVietnamese ? 'Điều chỉnh mức độ đã chọn:' : 'Adjust Intensity for Selected:';
+  String get obsSheetEmotionalHeading =>
+      isVietnamese ? 'Tâm trạng & Cảm xúc' : 'Emotional State & Feelings';
+  String get obsSheetEmotionalSub => isVietnamese
+      ? 'Chọn các cảm xúc cô ấy đã chia sẻ hôm nay'
+      : 'Select emotional states she shared today';
+  String get obsSheetPersonalNoteHeading =>
+      isVietnamese ? 'Ghi chú cá nhân (tùy chọn)' : 'Optional Personal Note';
+  String get obsSheetPersonalNoteHint => isVietnamese
+      ? 'Ví dụ: Cô ấy thích trà hoa cúc nóng và muốn đi ngủ sớm trong yên tĩnh.'
+      : 'e.g., She enjoyed hot chamomile tea and requested an early quiet night.';
+  String get obsSheetSevereWarning => isVietnamese
+      ? 'Lưu ý nhẹ nhàng: Cơn đau dữ dội có thể ảnh hưởng nhiều đến sức khỏe. Hãy luôn khuyến khích cô ấy thăm khám bác sĩ nếu cơn đau kéo dài hoặc nghiêm trọng.'
+      : 'Gentle note: Severe pain can be debilitating. Always encourage seeking professional medical advice if pain is intense or persistent.';
+  String get obsSheetSave =>
+      isVietnamese ? 'Lưu ghi nhận' : 'Save Log';
+  String get obsSheetDeleteTooltip =>
+      isVietnamese ? 'Xóa ghi nhận' : 'Delete observation';
+
+  // --- Educational Library ---
+  String get actionHelpfulActions =>
+      isVietnamese ? 'Hành động gợi ý cho bạn:' : 'Helpful Partner Actions:';
+  String get topicRespectfulComm =>
+      isVietnamese ? 'Giao tiếp tinh tế' : 'Respectful Communication';
+  String get topicPracticalSupply =>
+      isVietnamese ? 'Đồ dùng thiết yếu' : 'Practical Essentials';
+  String get topicCycleUncertainty =>
+      isVietnamese ? 'Dao động tự nhiên' : 'Cycle Uncertainty';
 }
 

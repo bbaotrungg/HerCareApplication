@@ -329,28 +329,32 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
-              color: theme.cardTheme.color,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: theme.dividerColor),
             ),
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.shield_outlined, color: AppColors.lavender),
-                  title: Text(l10n.privacyNoticeTile),
-                  subtitle: Text(l10n.privacyNoticeSub),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => _showPrivacyNotice(context, l10n),
-                ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: const Icon(Icons.file_download_outlined, color: AppColors.sage),
-                  title: Text(l10n.exportDataTile),
-                  subtitle: Text(l10n.exportDataSub),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => _exportData(context, ref, l10n),
-                ),
-              ],
+            child: Material(
+              color: theme.cardTheme.color,
+              borderRadius: BorderRadius.circular(16),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.shield_outlined, color: AppColors.lavender),
+                    title: Text(l10n.privacyNoticeTile),
+                    subtitle: Text(l10n.privacyNoticeSub),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => _showPrivacyNotice(context, l10n),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(Icons.file_download_outlined, color: AppColors.sage),
+                    title: Text(l10n.exportDataTile),
+                    subtitle: Text(l10n.exportDataSub),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => _exportData(context, ref, l10n),
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -361,15 +365,19 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
-              color: theme.cardTheme.color,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: theme.dividerColor),
             ),
-            child: ListTile(
-              leading: const Icon(Icons.delete_forever_outlined, color: Colors.red),
-              title: Text(l10n.clearDataTile, style: const TextStyle(color: Colors.red)),
-              subtitle: Text(l10n.clearDataSub),
-              onTap: () => _confirmClearData(context, ref, l10n),
+            child: Material(
+              color: theme.cardTheme.color,
+              borderRadius: BorderRadius.circular(16),
+              clipBehavior: Clip.antiAlias,
+              child: ListTile(
+                leading: const Icon(Icons.delete_forever_outlined, color: Colors.red),
+                title: Text(l10n.clearDataTile, style: const TextStyle(color: Colors.red)),
+                subtitle: Text(l10n.clearDataSub),
+                onTap: () => _confirmClearData(context, ref, l10n),
+              ),
             ),
           ),
 

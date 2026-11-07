@@ -25,6 +25,26 @@ enum TipCategory {
     }
   }
 
+  String localizedName(bool isVi) {
+    if (isVi) {
+      switch (this) {
+        case TipCategory.cycleUnderstanding:
+          return 'Hiểu về chu kỳ';
+        case TipCategory.physicalComfort:
+          return 'Giảm đau & Tạo thoải mái';
+        case TipCategory.emotionalSupport:
+          return 'Giao tiếp & Thấu cảm';
+        case TipCategory.respectfulCommunication:
+          return 'Giao tiếp tinh tế';
+        case TipCategory.practicalEssentials:
+          return 'Đồ dùng thiết yếu';
+        case TipCategory.predictionUncertainty:
+          return 'Dao động tự nhiên';
+      }
+    }
+    return displayName;
+  }
+
   IconData get icon {
     switch (this) {
       case TipCategory.cycleUnderstanding:
@@ -50,6 +70,10 @@ class EducationalTip {
   final String fullContent;
   final TipCategory category;
   final List<String> actionablePoints;
+  final String? titleVi;
+  final String? summaryVi;
+  final String? fullContentVi;
+  final List<String>? actionablePointsVi;
 
   const EducationalTip({
     required this.id,
@@ -58,6 +82,16 @@ class EducationalTip {
     required this.fullContent,
     required this.category,
     this.actionablePoints = const [],
+    this.titleVi,
+    this.summaryVi,
+    this.fullContentVi,
+    this.actionablePointsVi,
   });
+
+  String localizedTitle(bool isVi) => (isVi && titleVi != null) ? titleVi! : title;
+  String localizedSummary(bool isVi) => (isVi && summaryVi != null) ? summaryVi! : summary;
+  String localizedContent(bool isVi) => (isVi && fullContentVi != null) ? fullContentVi! : fullContent;
+  List<String> localizedActionablePoints(bool isVi) =>
+      (isVi && actionablePointsVi != null) ? actionablePointsVi! : actionablePoints;
 }
 

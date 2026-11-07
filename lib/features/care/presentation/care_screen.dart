@@ -213,23 +213,7 @@ class _CareScreenState extends ConsumerState<CareScreen> with SingleTickerProvid
         : CuratedTips.allTips.where((t) => t.category == _selectedCategory).toList();
 
     String getCategoryLabel(TipCategory cat) {
-      if (l10n.isVietnamese) {
-        switch (cat) {
-          case TipCategory.cycleUnderstanding:
-            return l10n.topicUnderstanding;
-          case TipCategory.physicalComfort:
-            return l10n.topicComfort;
-          case TipCategory.emotionalSupport:
-            return l10n.topicCommunication;
-          case TipCategory.respectfulCommunication:
-            return 'Giao tiếp tinh tế';
-          case TipCategory.practicalEssentials:
-            return 'Đồ dùng thiết yếu';
-          case TipCategory.predictionUncertainty:
-            return 'Dao động tự nhiên';
-        }
-      }
-      return cat.displayName;
+      return cat.localizedName(l10n.isVietnamese);
     }
 
     return Column(
@@ -276,7 +260,7 @@ class _CareScreenState extends ConsumerState<CareScreen> with SingleTickerProvid
             itemCount: tips.length,
             itemBuilder: (context, index) {
               final tip = tips[index];
-              return _buildTipCard(theme, tip);
+              return _buildTipCard(theme, tip, l10n);
             },
           ),
         ),
@@ -284,7 +268,7 @@ class _CareScreenState extends ConsumerState<CareScreen> with SingleTickerProvid
     );
   }
 
-  Widget _buildTipCard(ThemeData theme, EducationalTip tip) {
+  Widget _buildTipCard(ThemeData theme, EducationalTip tip, AppLocalizations l10n) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
@@ -306,13 +290,13 @@ class _CareScreenState extends ConsumerState<CareScreen> with SingleTickerProvid
             child: Icon(tip.category.icon, color: AppColors.lavenderDark, size: 22),
           ),
           title: Text(
-            tip.title,
+            tip.localizedTitle(l10n.isVietnamese),
             style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 4),
             child: Text(
-              tip.summary,
+              tip.localizedSummary(l10n.isVietnamese),
               style: theme.textTheme.bodySmall,
             ),
           ),
@@ -321,17 +305,17 @@ class _CareScreenState extends ConsumerState<CareScreen> with SingleTickerProvid
           children: [
             const Divider(),
             Text(
-              tip.fullContent,
+              tip.localizedContent(l10n.isVietnamese),
               style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
             ),
-            if (tip.actionablePoints.isNotEmpty) ...[
+            if (tip.localizedActionablePoints(l10n.isVietnamese).isNotEmpty) ...[
               const SizedBox(height: 14),
               Text(
-                'Helpful Partner Actions:',
+                l10n.actionHelpfulActions,
                 style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 6),
-              ...tip.actionablePoints.map((pt) {
+              ...tip.localizedActionablePoints(l10n.isVietnamese).map((pt) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 3),
                   child: Row(

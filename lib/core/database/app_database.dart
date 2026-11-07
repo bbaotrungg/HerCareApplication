@@ -27,6 +27,10 @@ class AppDatabase {
       path,
       version: 1,
       onCreate: _onCreate,
+      onOpen: (db) async {
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_cycle_records_start ON cycle_records(start_date);');
+        await db.execute('CREATE INDEX IF NOT EXISTS idx_daily_obs_date ON daily_observations(date);');
+      },
     );
   }
 
@@ -95,6 +99,10 @@ class AppDatabase {
         updated_at TEXT NOT NULL
       )
     ''');
+
+    // Indexes for fast lookup & sorting
+    await db.execute('CREATE INDEX IF NOT EXISTS idx_cycle_records_start ON cycle_records(start_date);');
+    await db.execute('CREATE INDEX IF NOT EXISTS idx_daily_obs_date ON daily_observations(date);');
   }
 
   // --- Cycle Records DAO ---

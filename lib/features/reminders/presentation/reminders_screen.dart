@@ -162,48 +162,52 @@ class RemindersScreen extends ConsumerWidget {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   decoration: BoxDecoration(
-                    color: theme.cardTheme.color,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: theme.dividerColor),
                   ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    leading: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: reminder.isEnabled
-                            ? AppColors.lavenderSurface
-                            : theme.colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        reminder.type.icon,
-                        color: reminder.isEnabled ? AppColors.lavender : theme.disabledColor,
-                        size: 22,
-                      ),
-                    ),
-                    title: Text(
-                      reminder.title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 4),
-                        Text(
-                          '${reminder.formattedTime} • "${reminder.discreetMessage}"',
-                          style: theme.textTheme.bodySmall,
+                  child: Material(
+                    color: theme.cardTheme.color,
+                    borderRadius: BorderRadius.circular(16),
+                    clipBehavior: Clip.antiAlias,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      leading: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: reminder.isEnabled
+                              ? AppColors.lavenderSurface
+                              : theme.colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ],
-                    ),
-                    trailing: Switch(
-                      value: reminder.isEnabled,
-                      activeThumbColor: AppColors.lavender,
-                      onChanged: (val) {
-                        ref.read(remindersProvider.notifier).toggleReminder(reminder, val);
-                      },
+                        child: Icon(
+                          reminder.type.icon,
+                          color: reminder.isEnabled ? AppColors.lavender : theme.disabledColor,
+                          size: 22,
+                        ),
+                      ),
+                      title: Text(
+                        reminder.title,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 4),
+                          Text(
+                            '${reminder.formattedTime} • "${reminder.discreetMessage}"',
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                      trailing: Switch(
+                        value: reminder.isEnabled,
+                        activeThumbColor: AppColors.lavender,
+                        onChanged: (val) {
+                          ref.read(remindersProvider.notifier).toggleReminder(reminder, val);
+                        },
+                      ),
                     ),
                   ),
                 );

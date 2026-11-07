@@ -95,16 +95,19 @@ class _PeriodEntryDialogState extends ConsumerState<PeriodEntryDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = ref.watch(appLocalizationsProvider);
 
     return AlertDialog(
-      title: Text(widget.initialRecord != null ? 'Edit Period Record' : 'Record Actual Period'),
+      title: Text(widget.initialRecord != null
+          ? l10n.periodDialogTitleEdit
+          : l10n.periodDialogTitleRecord),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Enter confirmed start and end dates as shared by your partner. Only actual dates are recorded.',
+              l10n.periodDialogDescription,
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: 18),
@@ -112,18 +115,18 @@ class _PeriodEntryDialogState extends ConsumerState<PeriodEntryDialog> {
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: const Icon(Icons.calendar_today_outlined, color: Colors.redAccent),
-              title: const Text('Period Start Date'),
+              title: Text(l10n.periodDialogStartDate),
               subtitle: Text(AppDateUtils.formatShortDate(_startDate)),
               trailing: TextButton(
                 onPressed: _pickStartDate,
-                child: const Text('Change'),
+                child: Text(l10n.periodDialogChange),
               ),
             ),
             const Divider(),
             // Ongoing Checkbox
             CheckboxListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Period is still ongoing / End date unknown'),
+              title: Text(l10n.periodDialogOngoing),
               value: _isOngoing,
               onChanged: (val) {
                 setState(() {
@@ -136,15 +139,15 @@ class _PeriodEntryDialogState extends ConsumerState<PeriodEntryDialog> {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.event_available_outlined, color: Colors.green),
-                title: const Text('Period End Date'),
+                title: Text(l10n.periodDialogEndDate),
                 subtitle: Text(
                   _endDate != null
                       ? AppDateUtils.formatShortDate(_endDate!)
-                      : 'Select end date',
+                      : l10n.periodDialogSelectEndDate,
                 ),
                 trailing: TextButton(
                   onPressed: _pickEndDate,
-                  child: const Text('Select'),
+                  child: Text(l10n.periodDialogSelect),
                 ),
               ),
             ],
@@ -156,15 +159,15 @@ class _PeriodEntryDialogState extends ConsumerState<PeriodEntryDialog> {
           TextButton(
             onPressed: _delete,
             style: TextButton.styleFrom(foregroundColor: theme.colorScheme.error),
-            child: const Text('Delete'),
+            child: Text(l10n.actionDelete),
           ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(l10n.actionCancel),
         ),
         ElevatedButton(
           onPressed: _save,
-          child: const Text('Save Record'),
+          child: Text(l10n.periodDialogSaveRecord),
         ),
       ],
     );

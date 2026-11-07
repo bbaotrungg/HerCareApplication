@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hercare/core/localization/app_language.dart';
 import 'package:hercare/features/care/domain/models/care_recommendation.dart';
 import 'package:hercare/features/care/domain/services/recommendation_engine.dart';
 import 'package:hercare/features/cycle_tracking/domain/models/cycle_estimate.dart';
@@ -165,6 +166,41 @@ void main() {
       expect(recs.isNotEmpty, true);
       expect(recs.any((CareRecommendation r) => r.id == 'general_gentle_checkin'), true);
       expect(recs.any((CareRecommendation r) => r.id == 'general_water_drink'), true);
+    });
+
+    test('dynamically generates targeted recommendations directly from symptomMoodEstimate', () {
+      const estimate = CycleEstimate(
+        reliability: EstimateReliability.cycleInformed,
+        averageCycleLength: 28,
+        variabilityDays: 1,
+        currentEstimatedPhase: CyclePhase.menstrual,
+        dayOfCycle: 2,
+        recordedCyclesCount: 3,
+        statusTitle: 'Cycle-Informed',
+        explanationMessage: 'Valid',
+      );
+
+      final symptomMood = estimationEngine.estimate(cycleEstimate: estimate);
+      final recsEn = recEngine.generateRecommendations(
+        symptomMoodEstimate: symptomMood,
+        cycleEstimate: estimate,
+        language: AppLanguage.en,
+      );
+
+      expect(recsEn.any((r) => r.id == 'targeted_cramps'), true);
+      final crampRec = recsEn.firstWhere((r) => r.id == 'targeted_cramps');
+      expect(crampRec.contextBasis, 'Soothing abdominal cramps');
+      expect(crampRec.category, RecommendationCategory.comfort);
+
+      final recsVi = recEngine.generateRecommendations(
+        symptomMoodEstimate: symptomMood,
+        cycleEstimate: estimate,
+        language: AppLanguage.vi,
+      );
+      expect(recsVi.any((r) => r.id == 'targeted_cramps'), true);
+      final crampRecVi = recsVi.firstWhere((r) => r.id == 'targeted_cramps');
+      expect(crampRecVi.contextBasis, 'Xoa dịu cảm giác đau bụng');
+      expect(crampRecVi.naturalThought, contains('túi chườm ấm'));
     });
   });
 }

@@ -103,6 +103,7 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = ref.watch(appLocalizationsProvider);
 
     return DraggableScrollableSheet(
       initialChildSize: 0.9,
@@ -130,7 +131,7 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Log Symptoms & Mood',
+                        l10n.obsSheetTitle,
                         style: theme.textTheme.headlineSmall,
                       ),
                       IconButton(
@@ -181,8 +182,8 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
                               value: s,
                               child: Text(
                                 s == ObservationSource.reportedByPartner
-                                    ? 'Shared by her'
-                                    : 'Observed & discussed',
+                                    ? l10n.obsSheetSharedByHer
+                                    : l10n.obsSheetObserved,
                                 style: const TextStyle(fontSize: 13),
                               ),
                             );
@@ -212,7 +213,7 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Gentle note: Severe pain can be debilitating. Always encourage seeking professional medical advice if pain is intense or persistent.',
+                              l10n.obsSheetSevereWarning,
                               style: theme.textTheme.bodySmall?.copyWith(color: AppColors.softRoseDark),
                             ),
                           ),
@@ -223,12 +224,12 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
 
                   // Physical Symptoms Section
                   Text(
-                    'Physical Sensations Shared',
+                    l10n.obsSheetPhysicalHeading,
                     style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Tap to select and configure intensity (Mild, Moderate, Severe)',
+                    l10n.obsSheetPhysicalSub,
                     style: theme.textTheme.bodySmall,
                   ),
                   const SizedBox(height: 12),
@@ -282,7 +283,7 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Adjust Intensity for Selected:',
+                            l10n.obsSheetIntensityAdjustTitle,
                             style: theme.textTheme.labelMedium,
                           ),
                           const SizedBox(height: 8),
@@ -328,12 +329,12 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
 
                   // Emotional State Section
                   Text(
-                    'Emotional Experience Voluntarily Shared',
+                    l10n.obsSheetEmotionalHeading,
                     style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Never assume emotions are caused solely by cycles; every person feels differently.',
+                    l10n.obsSheetEmotionalSub,
                     style: theme.textTheme.bodySmall,
                   ),
                   const SizedBox(height: 12),
@@ -375,15 +376,15 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
 
                   // Optional Personal Note
                   Text(
-                    'Optional Personal Note',
+                    l10n.obsSheetPersonalNoteHeading,
                     style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _noteController,
                     maxLines: 3,
-                    decoration: const InputDecoration(
-                      hintText: 'e.g., She enjoyed hot chamomile tea and requested an early quiet night.',
+                    decoration: InputDecoration(
+                      hintText: l10n.obsSheetPersonalNoteHint,
                     ),
                   ),
 
@@ -403,7 +404,7 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
                   if (widget.existingObservation != null) ...[
                     IconButton(
                       icon: const Icon(Icons.delete_outline, color: Colors.red),
-                      tooltip: 'Delete observation',
+                      tooltip: l10n.obsSheetDeleteTooltip,
                       onPressed: _delete,
                     ),
                     const SizedBox(width: 8),
@@ -411,14 +412,14 @@ class _LogObservationSheetState extends ConsumerState<LogObservationSheet> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+                      child: Text(l10n.actionCancel),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _save,
-                      child: const Text('Save Log'),
+                      child: Text(l10n.obsSheetSave),
                     ),
                   ),
                 ],
